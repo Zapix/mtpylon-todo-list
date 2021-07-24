@@ -7,6 +7,22 @@ jobs:
     strategy:
       matrix:
         python-version: [ 3.9 ]
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: todolist
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      PG_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/todolist
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -30,4 +46,7 @@ jobs:
         working-directory: backend/
       - name: Type checking
         run: mypy .
+        working-directory: backend/
+      - name: Apply Migrations
+        run: alembic upgrade head
         working-directory: backend/
