@@ -50,3 +50,6 @@ jobs:
       - name: Apply Migrations
         run: alembic upgrade head
         working-directory: backend/
+      - name: Running Pytests
+        run: pytest .
+        working-directory: backend/
