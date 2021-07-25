@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy import Column, Integer, Sequence, String, BigInteger, ForeignKey
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import relationship
 
-
-Base = declarative_base()
+from db import Base
 
 
 class User(Base):
