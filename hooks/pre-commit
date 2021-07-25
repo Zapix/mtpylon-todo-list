@@ -1,0 +1,54 @@
+#!/bin/bash
+echo "Check backend app"
+cd backend/
+pwd
+ls
+
+echo "Running flake8"
+. venv/bin/activate
+flake8 .
+flake8_result=$?
+echo "flake8 check rsult $flake8_result"
+if [ $flake8_result != 0 ]
+then
+  exit 1
+fi
+
+echo "Running mypy"
+mypy .
+mypy_result=$?
+echo "Mypy result $mypy_result"
+if [ $mypy_result != 0 ]
+then
+  exit 1
+fi
+
+echo "Runnin pytests"
+pytest .
+pytest_result=$?
+echo "Pytest result $pytest_result"
+if [ $pytest_result != 0 ]
+then 
+    exit 1
+fi
+
+cd ..
+
+echo "Backend app successfully checked"
+
+echo "-------------------------------------"
+
+echo "Check frontend app"
+
+cd frontend/
+
+echo "Running react unit tests"
+CI=true npm test
+npm_test_result=$?
+if [ $npm_test_result != 0 ] 
+then
+    exit 1
+fi
+
+echo "Frontend app successfully checked"
+
