@@ -16,8 +16,8 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
-    nickname = Column(String, unique=True)
-    password = Column(String)
+    nickname = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
 
     auth_keys = relationship('AuthKey', back_populates='user')
 
@@ -33,8 +33,8 @@ class AuthKey(Base):
     __tablename__ = 'auth_keys'
 
     id = Column(Integer, Sequence('auth_key_id_seq'), primary_key=True)
-    auth_key_id = Column(BigInteger, unique=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    auth_key_id = Column(BigInteger, unique=True, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
     user = relationship('User', back_populates='auth_keys')
 

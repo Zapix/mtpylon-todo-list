@@ -10,8 +10,8 @@ class TodoList(Base):
     __tablename__ = 'todo_lists'
 
     id = Column(Integer, Sequence('todo_list_id_seq'), primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    title = Column(String)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    title = Column(String, nullable=False)
 
     user = relationship(User, back_populates='todo_lists')
     tasks = relationship('Task', back_populates='todo_list')
@@ -27,9 +27,9 @@ class Task(Base):
     __tablename__ = 'tasks'
 
     id = Column(Integer, Sequence('task_id_seq'), primary_key=True)
-    todo_list_id = Column(Integer, ForeignKey('todo_lists.id'))
-    title = Column(String)
-    completed = Column(Boolean, default=False)
+    todo_list_id = Column(Integer, ForeignKey('todo_lists.id'), nullable=False)
+    title = Column(String, nullable=False)
+    completed = Column(Boolean, default=False, nullable=False)
 
     todo_list = relationship('TodoList', back_populates='tasks')
 
