@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
-from sqlalchemy import Column, Integer, Sequence, String, BigInteger, ForeignKey
+from sqlalchemy import (
+    Column,
+    Integer,
+    Sequence,
+    String,
+    BigInteger,
+    ForeignKey,
+)
 from sqlalchemy.orm import relationship
 
 from db import Base

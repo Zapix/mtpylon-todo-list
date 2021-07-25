@@ -34,4 +34,5 @@ class Task(Base):
     todo_list = relationship('TodoList', back_populates='tasks')
 
     def __repr__(self):
-        return f'<Task (id={self.id} title={self.title} completed={self.completed})>'
+        id_, title, completed = self.id, self.title, self.completed
+        return f'<Task (id={id_} title={title} completed={completed})>'
