@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
-from faker import Faker  # type: ignore
+from faker import Faker
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
