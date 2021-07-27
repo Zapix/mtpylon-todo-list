@@ -4,7 +4,7 @@ import os
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-PG_URL = os.environ.get('PG_URL')
+PG_URL = os.environ.get('PG_URL', 'sqlite+aiosqlite://')
 
 engine = create_async_engine(PG_URL, future=True, echo=True)
 async_session = sessionmaker(
