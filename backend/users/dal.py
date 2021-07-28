@@ -5,7 +5,9 @@ from sqlalchemy import select
 from sqlalchemy.sql import Select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from .models import User
+from mtpylon.crypto import AuthKey as MtpylonAuthKey  # type: ignore
+
+from .models import User, AuthKey
 
 
 async def create_user(
@@ -46,3 +48,21 @@ async def get_user(
         user = cast(User, row[0])
 
     return user
+
+
+async def create_auth_key(
+        session: AsyncSession,
+        user: User,
+        auth_key: MtpylonAuthKey
+) -> AuthKey:
+    """
+    Creates auth key for user
+    """
+    key = AuthKey(
+        auth_key_id=auth_key.id,
+        user_id=user.id
+    )
+    session.add(key)
+    await session.commit()
+
+    return key
