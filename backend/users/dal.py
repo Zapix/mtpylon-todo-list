@@ -31,6 +31,7 @@ async def get_user(
     session: AsyncSession,
     user_id: Optional[int] = None,
     nickname: Optional[str] = None,
+    auth_key: Optional[MtpylonAuthKey] = None,
 ) -> Optional[User]:
     stmt: Select = select(User)
 
@@ -39,6 +40,9 @@ async def get_user(
 
     if nickname is not None:
         stmt = stmt.where(User.nickname == nickname)
+
+    if auth_key is not None:
+        stmt = stmt.join(AuthKey).where(AuthKey.auth_key_id == auth_key.id)
 
     result = await session.execute(stmt)
     row = result.one_or_none()
