@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.sql import Select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from mtpylon.crypto import AuthKey as MtpylonAuthKey  # type: ignore
+from mtpylon.crypto import AuthKey as MtpylonAuthKey
 
 from .models import User, AuthKey
 

@@ -2,7 +2,7 @@
 import pytest
 from faker import Faker
 
-from mtpylon.crypto import AuthKey  # type: ignore
+from mtpylon.crypto import AuthKey
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 

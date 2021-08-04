@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from aiohttp.web import Request
-from mtpylon.crypto import AuthKey  # type: ignore
-from mtpylon.exceptions import RpcCallError  # type: ignore
-from mtpylon.contextvars import auth_key_var  # type: ignore
+from mtpylon.crypto import AuthKey
+from mtpylon.exceptions import RpcCallError
+from mtpylon.contextvars import auth_key_var
 
 from users.utils import login_user, remember_user
 from ..constructors import User, RegisteredUser

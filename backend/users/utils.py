@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from hashlib import sha1
 
-from mtpylon.crypto import AuthKey as MtpylonAuthKey  # type: ignore
+from mtpylon.crypto import AuthKey as MtpylonAuthKey
 
 from db import async_session
 from .models import User

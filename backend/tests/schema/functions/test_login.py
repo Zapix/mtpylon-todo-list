@@ -3,8 +3,8 @@ import pytest
 from contextlib import ExitStack
 from unittest.mock import patch, AsyncMock, MagicMock
 
-from mtpylon.contextvars import auth_key_var  # type: ignore
-from mtpylon.exceptions import RpcCallError  # type: ignore
+from mtpylon.contextvars import auth_key_var
+from mtpylon.exceptions import RpcCallError
 
 from schema.functions.login_func import login
 from schema.constructors import RegisteredUser

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from mtpylon import Schema  # type: ignore
+from mtpylon import Schema
 
 
 from .constructors import User
