@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-from mtpylon import Schema  # type: ignore
+from mtpylon import Schema
 
 
 from .constructors import User
-from .functions import register
+from .functions import register, login
 
 mtpylon_schema = Schema(
     constructors=[User],
-    functions=[register]
+    functions=[
+        register,
+        login,
+    ]
 )
 
 __all__ = [

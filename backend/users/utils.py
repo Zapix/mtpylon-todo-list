@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 from hashlib import sha1
 
+from mtpylon.crypto import AuthKey as MtpylonAuthKey
+
 from db import async_session
 from .models import User
-from .dal import get_user, create_user
+from .dal import get_user, create_user, create_auth_key
+
+AUTH_ERROR_MESSAGE = 'Authentication has been failed'
 
 
 def encode_password(password: str) -> str:
@@ -44,3 +48,31 @@ async def register_user(nickname: str, password: str) -> User:
         )
 
     return new_user
+
+
+async def login_user(nickname: str, password: str) -> User:
+    """
+    Checks user with current credentials
+    Raises:
+        ValueError - if something goes wrong
+    """
+    async with async_session() as session:
+        user = await get_user(session, nickname=nickname)
+
+    if user is None:
+        raise ValueError(AUTH_ERROR_MESSAGE)
+
+    hashed_password = encode_password(password)
+
+    if hashed_password != user.password:
+        raise ValueError(AUTH_ERROR_MESSAGE)
+
+    return user
+
+
+async def remember_user(user: User, auth_key: MtpylonAuthKey):
+    """
+    Creates auth key for user
+    """
+    async with async_session() as session:
+        await create_auth_key(session, user, auth_key)

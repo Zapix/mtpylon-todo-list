@@ -4,6 +4,7 @@ import pytest
 from users.dal import (
     create_user,
     get_user,
+    create_auth_key,
 )
 
 
@@ -58,3 +59,30 @@ async def test_get_user_by_id_none(async_session):
         returned_user = await get_user(session, user_id=-1)
 
     assert returned_user is None
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_auth_key(async_session, user, mtpylon_auth_key):
+    async with async_session() as session:
+        await create_auth_key(session, user, mtpylon_auth_key)
+        returned_user = await get_user(session, auth_key=mtpylon_auth_key)
+
+    assert returned_user is not None
+    assert returned_user.id == user.id
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_auth_key_none(async_session, mtpylon_auth_key):
+    async with async_session() as session:
+        returned_user = await get_user(session, auth_key=mtpylon_auth_key)
+
+    assert returned_user is None
+
+
+@pytest.mark.asyncio
+async def test_create_auth_key(async_session, user, mtpylon_auth_key):
+    async with async_session() as session:
+        auth_key = await create_auth_key(session, user, mtpylon_auth_key)
+
+    assert auth_key.id is not None
+    assert auth_key.auth_key_id == mtpylon_auth_key.id

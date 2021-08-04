@@ -6,7 +6,7 @@ from aiohttp import web
 import aiohttp_cors  # type: ignore
 from dotenv import load_dotenv
 
-from mtpylon.configuration import configure_app  # type: ignore
+from mtpylon.configuration import configure_app
 
 from schema import mtpylon_schema
 from rsa_keys import get_rsa_keys
