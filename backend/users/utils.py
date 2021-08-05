@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from hashlib import sha1
+from typing import Optional
 
 from mtpylon.crypto import AuthKey as MtpylonAuthKey
 
@@ -76,3 +77,12 @@ async def remember_user(user: User, auth_key: MtpylonAuthKey):
     """
     async with async_session() as session:
         await create_auth_key(session, user, auth_key)
+
+
+async def get_user_by_auth_key(auth_key: MtpylonAuthKey) -> Optional[User]:
+    """
+    Get auth user by auth key
+    """
+    async with async_session() as session:
+        user = await get_user(session, auth_key=auth_key)
+    return user

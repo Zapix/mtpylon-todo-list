@@ -6,7 +6,8 @@ from users.utils import (
     encode_password,
     register_user,
     login_user,
-    remember_user
+    remember_user,
+    get_user_by_auth_key
 )
 
 
@@ -78,3 +79,39 @@ async def test_remember_user(async_session, user, mtpylon_auth_key):
         await remember_user(user, mtpylon_auth_key)
 
     create_auth_key.assert_awaited()
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_auth_key_none(async_session, mtpylon_auth_key):
+    get_user = AsyncMock(return_value=None)
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('users.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch('users.utils.get_user', get_user)
+        )
+        returned_user = await get_user_by_auth_key(auth_key=mtpylon_auth_key)
+
+    assert returned_user is None
+    get_user.assert_awaited()
+
+
+@pytest.mark.asyncio
+async def test_get_user_by_auth_key_real_user(
+    async_session,
+    user,
+    mtpylon_auth_key,
+):
+    get_user = AsyncMock(return_value=user)
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('users.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch('users.utils.get_user', get_user)
+        )
+        returned_user = await get_user_by_auth_key(mtpylon_auth_key)
+
+    assert returned_user == user
+    get_user.assert_awaited()
