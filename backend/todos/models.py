@@ -30,7 +30,7 @@ class Task(Base):
     id: int = Column(Integer, Sequence('task_id_seq'), primary_key=True)
     todo_list_id: int = Column(
         Integer,
-        ForeignKey('todo_lists.id'),
+        ForeignKey('todo_lists.id', ondelete="CASCADE"),
         nullable=False
     )
     title: str = Column(String, nullable=False)
