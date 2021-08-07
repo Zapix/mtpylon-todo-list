@@ -7,7 +7,7 @@ from faker import Faker
 from sqlalchemy.orm import sessionmaker
 
 from users.models import User
-from todos.utils import create_todo_list
+from todos.utils import create_todo_list, get_todo_lists
 
 
 @pytest.mark.asyncio
@@ -39,3 +39,26 @@ async def test_create_todo_list_success(
 
     assert returned_todo_list.id == todo_list.id
     assert returned_todo_list.title == todo_list.title
+
+
+@pytest.mark.asyncio
+async def test_get_todo_lists(
+    async_session: sessionmaker,
+    user: User,
+    fake: Faker,
+):
+    todo_lists = [MagicMock(id=(x + 1), title=fake.name()) for x in range(15)]
+    dal_get_todo_lists = AsyncMock(return_value=todo_lists)
+
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('todos.utils.async_session', async_session),
+        )
+        patcher.enter_context(
+            patch('todos.utils.dal_get_todo_lists', dal_get_todo_lists)
+        )
+
+        returned_todo_lists = await get_todo_lists(user)
+
+    assert len(returned_todo_lists) == 15
+    dal_get_todo_lists.assert_awaited()
