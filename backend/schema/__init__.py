@@ -2,15 +2,32 @@
 from mtpylon import Schema
 
 
-from .constructors import User
-from .functions import register, login, get_me
+from .constructors import Bool, User, TodoList, TodoListsResult
+from .functions import (
+    register,
+    login,
+    get_me,
+    create_todo_list,
+    get_todo_lists,
+    get_single_todo_list,
+    remove_todo_list,
+)
 
 mtpylon_schema = Schema(
-    constructors=[User],
+    constructors=[
+        Bool,
+        User,
+        TodoList,
+        TodoListsResult
+    ],
     functions=[
         register,
         login,
         get_me,
+        create_todo_list,
+        get_todo_lists,
+        get_single_todo_list,
+        remove_todo_list,
     ]
 )
 
