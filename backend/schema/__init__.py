@@ -10,6 +10,7 @@ from .functions import (
     create_todo_list,
     get_todo_lists,
     get_single_todo_list,
+    remove_todo_list,
 )
 
 mtpylon_schema = Schema(
@@ -26,6 +27,7 @@ mtpylon_schema = Schema(
         create_todo_list,
         get_todo_lists,
         get_single_todo_list,
+        remove_todo_list,
     ]
 )
 
