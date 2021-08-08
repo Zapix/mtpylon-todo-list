@@ -11,6 +11,7 @@ from todos.utils import (
     create_todo_list,
     get_todo_lists,
     get_todo_list_for_user,
+    delete_todo_list,
 )
 
 
@@ -102,19 +103,36 @@ async def test_get_todo_list_for_user_real_item(
     dal_get_single_todo_list = AsyncMock(return_value=todo_list)
 
     with ExitStack() as patcher:
-        with ExitStack() as patcher:
-            patcher.enter_context(
-                patch('todos.utils.async_session', async_session)
+        patcher.enter_context(
+            patch('todos.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch(
+                'todos.utils.dal_get_single_todo_list',
+                dal_get_single_todo_list
             )
-            patcher.enter_context(
-                patch(
-                    'todos.utils.dal_get_single_todo_list',
-                    dal_get_single_todo_list
-                )
-            )
+        )
 
-            returned_todo_list = await get_todo_list_for_user(user, 12)
+        returned_todo_list = await get_todo_list_for_user(user, 12)
 
     assert returned_todo_list is not None
     assert returned_todo_list.id == 12
     dal_get_single_todo_list.assert_awaited()
+
+
+@pytest.mark.asyncio
+async def test_delete_todo_list(async_session):
+    todo_list = MagicMock(id=43, title='sample')
+    dal_delete_todo_list = AsyncMock()
+
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('todos.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch('todos.utils.dal_delete_todo_list', dal_delete_todo_list)
+        )
+
+        await delete_todo_list(todo_list)
+
+    dal_delete_todo_list.assert_awaited()
