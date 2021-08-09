@@ -64,3 +64,14 @@ async def create_task(
     await session.commit()
 
     return task
+
+
+async def get_task_list(
+    session: AsyncSession,
+    todo_list: TodoList
+) -> List[Task]:
+    stmt = select(Task).where(Task.todo_list == todo_list)
+
+    result = await session.execute(stmt)
+
+    return result.scalars().all()

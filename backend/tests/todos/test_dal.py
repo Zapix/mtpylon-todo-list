@@ -6,13 +6,14 @@ from faker import Faker
 
 from users.models import User
 from users.dal import create_user
-from todos.models import TodoList
+from todos.models import TodoList, Task
 from todos.dal import (
     create_todo_list,
     get_todo_lists,
     get_single_todo_list,
     delete_todo_list,
     create_task,
+    get_task_list
 )
 
 
@@ -126,3 +127,25 @@ async def test_create_task_dal(
     assert task.todo_list == todo_list
     assert task.title == 'first task'
     assert not task.completed
+
+
+@pytest.mark.asyncio
+async def test_get_task_list(
+    async_session: sessionmaker,
+    fake: Faker,
+    todo_list: TodoList
+):
+    async with async_session() as session:
+        for _ in range(14):
+            task = Task(
+                todo_list=todo_list,
+                title=fake.name(),
+                completed=False
+            )
+            session.add(task)
+        await session.commit()
+
+        task_list = await get_task_list(session, todo_list)
+
+    assert len(task_list) == 14
+    assert isinstance(task_list[0], Task)
