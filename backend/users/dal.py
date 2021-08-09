@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from mtpylon.crypto import AuthKey as MtpylonAuthKey
 
+from converter import int64_to_long
 from .models import User, AuthKey
 
 
@@ -42,7 +43,8 @@ async def get_user(
         stmt = stmt.where(User.nickname == nickname)
 
     if auth_key is not None:
-        stmt = stmt.join(AuthKey).where(AuthKey.auth_key_id == auth_key.id)
+        auth_key_id = int64_to_long(auth_key.id)
+        stmt = stmt.join(AuthKey).where(AuthKey.auth_key_id == auth_key_id)
 
     result = await session.execute(stmt)
     row = result.one_or_none()
@@ -62,8 +64,9 @@ async def create_auth_key(
     """
     Creates auth key for user
     """
+    auth_key_id = int64_to_long(auth_key.id)
     key = AuthKey(
-        auth_key_id=auth_key.id,
+        auth_key_id=auth_key_id,
         user_id=user.id
     )
     session.add(key)
