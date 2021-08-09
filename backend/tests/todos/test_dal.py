@@ -12,6 +12,7 @@ from todos.dal import (
     get_todo_lists,
     get_single_todo_list,
     delete_todo_list,
+    create_task,
 )
 
 
@@ -112,3 +113,16 @@ async def test_delete_todo_list(
         result = await session.execute(stmt)
         deleted_todo_list = result.scalar_one_or_none()
         assert deleted_todo_list is None
+
+
+@pytest.mark.asyncio
+async def test_create_task_dal(
+    async_session: sessionmaker,
+    todo_list: TodoList
+):
+    async with async_session() as session:
+        task = await create_task(session, todo_list, 'first task')
+    assert task.id is not None
+    assert task.todo_list == todo_list
+    assert task.title == 'first task'
+    assert not task.completed

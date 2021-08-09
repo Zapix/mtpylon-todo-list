@@ -5,7 +5,7 @@ from sqlalchemy.sql import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from users.models import User
-from .models import TodoList
+from .models import TodoList, Task
 
 
 async def create_todo_list(
@@ -52,3 +52,15 @@ async def delete_todo_list(
     todo_list: TodoList
 ):
     await session.delete(todo_list)
+
+
+async def create_task(
+    session: AsyncSession,
+    todo_list: TodoList,
+    title: str,
+) -> Task:
+    task = Task(todo_list=todo_list, title=title, completed=False)
+    session.add(task)
+    await session.commit()
+
+    return task
