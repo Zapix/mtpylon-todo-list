@@ -3,12 +3,13 @@ from typing import List, Optional
 
 from db import async_session
 from users.models import User
-from .models import TodoList
+from .models import TodoList, Task
 from .dal import (
     create_todo_list as dal_create_todo_list,
     get_todo_lists as dal_get_todo_lists,
     get_single_todo_list as dal_get_single_todo_list,
     delete_todo_list as dal_delete_todo_list,
+    create_task as dal_create_task,
 )
 
 
@@ -59,3 +60,9 @@ async def get_todo_list_for_user(
 async def delete_todo_list(todo_list: TodoList):
     async with async_session() as session:
         await dal_delete_todo_list(session, todo_list)
+
+
+async def create_task(todo_list: TodoList, title: str) -> Task:
+    async with async_session() as session:
+        task = await dal_create_task(session, todo_list, title)
+    return task
