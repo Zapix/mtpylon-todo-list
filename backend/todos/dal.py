@@ -75,3 +75,27 @@ async def get_task_list(
     result = await session.execute(stmt)
 
     return result.scalars().all()
+
+
+async def get_task(
+    session: AsyncSession,
+    task_id: int,
+    user: Optional[User] = None,
+    todo_list: Optional[TodoList] = None,
+) -> Optional[Task]:
+    stmt = select(Task).where(Task.id == task_id)
+
+    if todo_list is not None:
+        stmt = stmt.where(Task.todo_list == todo_list)
+
+    if user is not None:
+        stmt = stmt.join(
+            TodoList,
+            Task.todo_list_id == TodoList.id
+        ).where(
+            TodoList.user == user
+        )
+
+    result = await session.execute(stmt)
+
+    return result.scalar_one_or_none()

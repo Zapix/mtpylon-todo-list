@@ -13,7 +13,8 @@ from todos.dal import (
     get_single_todo_list,
     delete_todo_list,
     create_task,
-    get_task_list
+    get_task_list,
+    get_task
 )
 
 
@@ -149,3 +150,88 @@ async def test_get_task_list(
 
     assert len(task_list) == 14
     assert isinstance(task_list[0], Task)
+
+
+@pytest.mark.asyncio
+async def test_task_by_id(async_session: sessionmaker, task: Task):
+    async with async_session() as session:
+        returned_task = await get_task(session, task_id=task.id)
+
+    assert returned_task is not None
+    assert returned_task.id == task.id
+
+
+@pytest.mark.asyncio
+async def test_get_task_by_id_none(async_session: sessionmaker):
+    async with async_session() as session:
+        returned_task = await get_task(session, task_id=-1)
+
+    assert returned_task is None
+
+
+@pytest.mark.asyncio
+async def test_get_task_by_todo_list(
+    async_session: sessionmaker,
+    todo_list: TodoList,
+    task: Task,
+):
+    async with async_session() as session:
+        returned_task = await get_task(
+            session,
+            todo_list=todo_list,
+            task_id=task.id
+        )
+
+    assert returned_task is not None
+    assert returned_task.id == task.id
+
+
+@pytest.mark.asyncio
+async def test_get_task_by_todo_list_none(
+    async_session: sessionmaker,
+    user: User,
+    task: Task
+):
+    async with async_session() as session:
+        new_todo_list = await create_todo_list(
+            session,
+            title='another',
+            user=user,
+        )
+
+        returned_task = await get_task(
+            session,
+            todo_list=new_todo_list,
+            task_id=task.id
+        )
+
+    assert returned_task is None
+
+
+@pytest.mark.asyncio
+async def test_get_task_by_user(
+    async_session: sessionmaker,
+    user: User,
+    task: Task
+):
+    async with async_session() as session:
+        returned_task = await get_task(session, user=user, task_id=task.id)
+
+    assert returned_task is not None
+    assert returned_task.id == task.id
+
+
+@pytest.mark.asyncio
+async def test_get_task_by_user_none(
+    async_session: sessionmaker,
+    task: Task
+):
+    async with async_session() as session:
+        new_user = await create_user(session, 'new_user', 'pass')
+        returned_task = await get_task(
+            session,
+            user=new_user,
+            task_id=task.id
+        )
+
+    assert returned_task is None

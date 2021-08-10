@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 
 from db import Base
 from users.models import User
-from todos.models import TodoList
+from todos.models import TodoList, Task
 
 
 @pytest.fixture
@@ -54,6 +54,19 @@ async def todo_list(
         session.add(todo_list)
         await session.commit()
     return todo_list
+
+
+@pytest.fixture
+async def task(async_session: sessionmaker, fake: Faker, todo_list):
+    async with async_session() as session:
+        task = Task(
+            title=fake.name(),
+            todo_list=todo_list
+        )
+        session.add(task)
+        await session.commit()
+
+    return task
 
 
 @pytest.fixture
