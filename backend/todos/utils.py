@@ -10,6 +10,7 @@ from .dal import (
     get_single_todo_list as dal_get_single_todo_list,
     delete_todo_list as dal_delete_todo_list,
     create_task as dal_create_task,
+    get_task_list as dal_get_task_list
 )
 
 
@@ -66,3 +67,9 @@ async def create_task(todo_list: TodoList, title: str) -> Task:
     async with async_session() as session:
         task = await dal_create_task(session, todo_list, title)
     return task
+
+
+async def get_tasks_for_todo_list(todo_list: TodoList) -> List[Task]:
+    async with async_session() as session:
+        task_list = await dal_get_task_list(session, todo_list=todo_list)
+    return task_list

@@ -14,6 +14,7 @@ from todos.utils import (
     get_todo_list_for_user,
     delete_todo_list,
     create_task,
+    get_tasks_for_todo_list
 )
 
 
@@ -157,3 +158,28 @@ async def test_create_task(async_session: sessionmaker, todo_list: TodoList):
         new_task = await create_task(todo_list, 'first task')
 
     assert new_task == task
+
+
+@pytest.mark.asyncio
+async def test_get_tasks_for_todo_list(
+    async_session: sessionmaker,
+    fake: Faker,
+    todo_list: TodoList
+):
+    tasks = [
+        MagicMock(id=(x + 1), title=fake.name(), todo_list=todo_list)
+        for x in range(15)
+    ]
+    dal_get_task_list = AsyncMock(return_value=tasks)
+
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('todos.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch('todos.utils.dal_get_task_list', dal_get_task_list)
+        )
+
+        retrieved_tasks = await get_tasks_for_todo_list(todo_list)
+
+    assert len(retrieved_tasks) == 15
