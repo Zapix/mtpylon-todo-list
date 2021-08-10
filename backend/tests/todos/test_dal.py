@@ -16,7 +16,8 @@ from todos.dal import (
     create_task,
     get_task_list,
     get_task,
-    update_task
+    update_task,
+    delete_task
 )
 
 
@@ -269,3 +270,15 @@ async def test_udpate_task_change_title(
 
     assert updated_task.title == 'changed'
     assert retrieved_task.title == 'changed'
+
+
+@pytest.mark.asyncio
+async def test_delete_task(async_session: sessionmaker, task: Task):
+    task_id = task.id
+    async with async_session() as session:
+        await delete_task(session, task)
+
+    async with async_session() as session:
+        returned_task = await get_task(session, task_id=task_id)
+
+    assert returned_task is None

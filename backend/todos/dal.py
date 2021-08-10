@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from typing import List, Optional
 
-from sqlalchemy.sql import select, update
+from sqlalchemy.sql import select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from users.models import User
@@ -121,3 +121,10 @@ async def update_task(
     await session.commit()
 
     return task
+
+
+async def delete_task(session: AsyncSession, task: Task):
+    stmt = delete(Task).where(Task.id == task.id)
+
+    await session.execute(stmt)
+    await session.commit()
