@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
+from typing import cast
 from sqlalchemy.sql import select
 from sqlalchemy.orm import sessionmaker
 from faker import Faker
@@ -14,7 +15,8 @@ from todos.dal import (
     delete_todo_list,
     create_task,
     get_task_list,
-    get_task
+    get_task,
+    update_task
 )
 
 
@@ -235,3 +237,35 @@ async def test_get_task_by_user_none(
         )
 
     assert returned_task is None
+
+
+@pytest.mark.asyncio
+async def test_update_task_mark_completed(
+    async_session: sessionmaker,
+    task: Task
+):
+    async with async_session() as session:
+        updated_task = await update_task(session, task, completed=True)
+
+    async with async_session() as session:
+        retrieved_task = await get_task(session, task_id=task.id)
+        retrieved_task = cast(Task, retrieved_task)
+
+    assert updated_task.completed
+    assert retrieved_task.completed
+
+
+@pytest.mark.asyncio
+async def test_udpate_task_change_title(
+    async_session: sessionmaker,
+    task: Task
+):
+    async with async_session() as session:
+        updated_task = await update_task(session, task, title='changed')
+
+    async with async_session() as session:
+        retrieved_task = await get_task(session, task_id=task.id)
+        retrieved_task = cast(Task, retrieved_task)
+
+    assert updated_task.title == 'changed'
+    assert retrieved_task.title == 'changed'

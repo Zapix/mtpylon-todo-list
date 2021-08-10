@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from typing import List, Optional
 
-from sqlalchemy.sql import select
+from sqlalchemy.sql import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from users.models import User
@@ -99,3 +99,25 @@ async def get_task(
     result = await session.execute(stmt)
 
     return result.scalar_one_or_none()
+
+
+async def update_task(
+    session: AsyncSession,
+    task: Task,
+    title: Optional[str] = None,
+    completed: Optional[bool] = None,
+):
+    stmt = update(Task).where(Task.id == task.id)
+
+    if title is not None:
+        task.title = title
+        stmt = stmt.values(title=title)
+
+    if completed is not None:
+        task.completed = completed
+        stmt = stmt.values(completed=completed)
+
+    await session.execute(stmt)
+    await session.commit()
+
+    return task
