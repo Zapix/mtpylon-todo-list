@@ -11,7 +11,8 @@ from .dal import (
     delete_todo_list as dal_delete_todo_list,
     create_task as dal_create_task,
     get_task_list as dal_get_task_list,
-    get_task as dal_get_task
+    get_task as dal_get_task,
+    update_task as dal_update_task,
 )
 
 
@@ -84,3 +85,9 @@ async def get_task_for_user(user: User, task_id: int) -> Optional[Task]:
             user=user
         )
     return task
+
+
+async def change_title(task: Task, title: str) -> Task:
+    async with async_session() as session:
+        updated_task = await dal_update_task(session, task, title=title)
+    return updated_task
