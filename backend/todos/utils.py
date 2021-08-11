@@ -92,6 +92,9 @@ async def get_task_for_user(user: User, task_id: int) -> Optional[Task]:
 
 
 async def change_title(task: Task, title: str) -> Task:
+    if len(title) == 0:
+        raise ValueError('Title should not been empty')
+
     async with async_session() as session:
         updated_task = await dal_update_task(session, task, title=title)
     return updated_task

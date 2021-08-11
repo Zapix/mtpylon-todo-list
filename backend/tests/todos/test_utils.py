@@ -263,6 +263,14 @@ async def test_change_title(
 
 
 @pytest.mark.asyncio
+async def test_change_title_empty_string(
+    task: Task
+):
+    with pytest.raises(ValueError):
+        await change_title(task, '')
+
+
+@pytest.mark.asyncio
 async def test_mark_completed(
     async_session: sessionmaker,
     fake: Faker
