@@ -18,6 +18,7 @@ from todos.utils import (
     get_task_for_user,
     change_title,
     mark_completed,
+    mark_uncompleted,
 )
 
 
@@ -261,7 +262,7 @@ async def test_mark_completed(
 ):
     task = MagicMock(id=12, title=fake.name(), completed=False)
 
-    updated_task = MagicMock(12, title=task.title, completed=True)
+    updated_task = MagicMock(id=12, title=task.title, completed=True)
     dal_update_task = AsyncMock(return_value=updated_task)
 
     with ExitStack() as patcher:
@@ -272,6 +273,29 @@ async def test_mark_completed(
             patch('todos.utils.dal_update_task', dal_update_task)
         )
         completed_task = await mark_completed(task)
+
+    assert completed_task == updated_task
+    dal_update_task.assert_awaited()
+
+
+@pytest.mark.asyncio
+async def test_mark_uncompleted(
+    async_session: sessionmaker,
+    fake: Faker
+):
+    task = MagicMock(id=12, title=fake.name(), completed=True)
+
+    updated_task = MagicMock(id=12, title=task.title, completed=False)
+    dal_update_task = AsyncMock(return_value=updated_task)
+
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('todos.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch('todos.utils.dal_update_task', dal_update_task)
+        )
+        completed_task = await mark_uncompleted(task)
 
     assert completed_task == updated_task
     dal_update_task.assert_awaited()
