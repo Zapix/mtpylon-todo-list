@@ -14,7 +14,8 @@ from todos.utils import (
     get_todo_list_for_user,
     delete_todo_list,
     create_task,
-    get_tasks_for_todo_list
+    get_tasks_for_todo_list,
+    get_task_for_user,
 )
 
 
@@ -183,3 +184,45 @@ async def test_get_tasks_for_todo_list(
         retrieved_tasks = await get_tasks_for_todo_list(todo_list)
 
     assert len(retrieved_tasks) == 15
+
+
+@pytest.mark.asyncio
+async def test_get_task_for_user_ok(
+    async_session: sessionmaker,
+    fake: Faker,
+    user: User
+):
+    task = MagicMock(id=32, title=fake.name())
+    dal_get_task = AsyncMock(return_value=task)
+
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('todos.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch('todos.utils.dal_get_task', dal_get_task)
+        )
+
+        retrieved_task = await get_task_for_user(user, 32)
+
+    assert retrieved_task == task
+
+
+@pytest.mark.asyncio
+async def test_get_task_for_user_none(
+    async_session: sessionmaker,
+    user: User
+):
+    dal_get_task = AsyncMock(return_value=None)
+
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('todos.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch('todos.utils.dal_get_task', dal_get_task)
+        )
+
+        retrieved_task = await get_task_for_user(user, 43)
+
+    assert retrieved_task is None
