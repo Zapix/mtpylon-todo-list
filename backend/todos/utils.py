@@ -13,6 +13,7 @@ from .dal import (
     get_task_list as dal_get_task_list,
     get_task as dal_get_task,
     update_task as dal_update_task,
+    delete_task as dal_delete_task,
 )
 
 
@@ -103,3 +104,8 @@ async def mark_uncompleted(task: Task) -> Task:
     async with async_session() as session:
         updated_task = await dal_update_task(session, task, completed=False)
     return updated_task
+
+
+async def delete_task(task: Task):
+    async with async_session() as session:
+        await dal_delete_task(session, task)

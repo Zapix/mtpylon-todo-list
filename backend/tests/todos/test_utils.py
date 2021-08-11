@@ -7,7 +7,7 @@ from faker import Faker
 from sqlalchemy.orm import sessionmaker
 
 from users.models import User
-from todos.models import TodoList
+from todos.models import TodoList, Task
 from todos.utils import (
     create_todo_list,
     get_todo_lists,
@@ -19,6 +19,7 @@ from todos.utils import (
     change_title,
     mark_completed,
     mark_uncompleted,
+    delete_task,
 )
 
 
@@ -299,3 +300,23 @@ async def test_mark_uncompleted(
 
     assert completed_task == updated_task
     dal_update_task.assert_awaited()
+
+
+@pytest.mark.asyncio
+async def test_delete_task(
+    async_session: sessionmaker,
+    task: Task
+):
+
+    dal_delete_task = AsyncMock()
+
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('todos.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch('todos.utils.dal_delete_task', dal_delete_task)
+        )
+        await delete_task(task)
+
+    dal_delete_task.assert_awaited()
