@@ -166,6 +166,12 @@ async def test_create_task(async_session: sessionmaker, todo_list: TodoList):
 
 
 @pytest.mark.asyncio
+async def test_create_task_empty_title(todo_list: TodoList):
+    with pytest.raises(ValueError):
+        await create_task(todo_list, '')
+
+
+@pytest.mark.asyncio
 async def test_get_tasks_for_todo_list(
     async_session: sessionmaker,
     fake: Faker,

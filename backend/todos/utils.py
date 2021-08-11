@@ -67,6 +67,9 @@ async def delete_todo_list(todo_list: TodoList):
 
 
 async def create_task(todo_list: TodoList, title: str) -> Task:
+    if len(title) == 0:
+        raise ValueError('Title should not been empty')
+
     async with async_session() as session:
         task = await dal_create_task(session, todo_list, title)
     return task
