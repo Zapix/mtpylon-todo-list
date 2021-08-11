@@ -91,3 +91,9 @@ async def change_title(task: Task, title: str) -> Task:
     async with async_session() as session:
         updated_task = await dal_update_task(session, task, title=title)
     return updated_task
+
+
+async def mark_completed(task: Task) -> Task:
+    async with async_session() as session:
+        updated_task = await dal_update_task(session, task, completed=True)
+    return updated_task

@@ -16,7 +16,8 @@ from todos.utils import (
     create_task,
     get_tasks_for_todo_list,
     get_task_for_user,
-    change_title
+    change_title,
+    mark_completed,
 )
 
 
@@ -250,4 +251,27 @@ async def test_change_title(
         handled_task = await change_title(task, 'new_title')
 
     assert updated_task == handled_task
+    dal_update_task.assert_awaited()
+
+
+@pytest.mark.asyncio
+async def test_mark_completed(
+    async_session: sessionmaker,
+    fake: Faker
+):
+    task = MagicMock(id=12, title=fake.name(), completed=False)
+
+    updated_task = MagicMock(12, title=task.title, completed=True)
+    dal_update_task = AsyncMock(return_value=updated_task)
+
+    with ExitStack() as patcher:
+        patcher.enter_context(
+            patch('todos.utils.async_session', async_session)
+        )
+        patcher.enter_context(
+            patch('todos.utils.dal_update_task', dal_update_task)
+        )
+        completed_task = await mark_completed(task)
+
+    assert completed_task == updated_task
     dal_update_task.assert_awaited()
