@@ -4,6 +4,7 @@ from .user import User, AnonymousUser, RegisteredUser
 from .todo_list import TodoList
 from .todo_lists_result import TodoListsResult
 from .task import Task
+from .task_list import TaskList
 
 
 __all__ = [
@@ -16,4 +17,5 @@ __all__ = [
     'TodoList',
     'TodoListsResult',
     'Task',
+    'TaskList',
 ]
