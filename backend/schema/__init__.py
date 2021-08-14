@@ -21,6 +21,7 @@ from .functions import (
     create_task,
     edit_task_title,
     set_as_completed,
+    set_as_uncompleted,
 )
 
 mtpylon_schema = Schema(
@@ -43,6 +44,7 @@ mtpylon_schema = Schema(
         create_task,
         edit_task_title,
         set_as_completed,
+        set_as_uncompleted,
     ]
 )
 
