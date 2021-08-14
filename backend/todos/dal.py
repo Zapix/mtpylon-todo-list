@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from typing import List, Optional
 
-from sqlalchemy.sql import select
+from sqlalchemy.sql import select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from users.models import User
-from .models import TodoList
+from .models import TodoList, Task
 
 
 async def create_todo_list(
@@ -52,3 +52,79 @@ async def delete_todo_list(
     todo_list: TodoList
 ):
     await session.delete(todo_list)
+
+
+async def create_task(
+    session: AsyncSession,
+    todo_list: TodoList,
+    title: str,
+) -> Task:
+    task = Task(todo_list=todo_list, title=title, completed=False)
+    session.add(task)
+    await session.commit()
+
+    return task
+
+
+async def get_task_list(
+    session: AsyncSession,
+    todo_list: TodoList
+) -> List[Task]:
+    stmt = select(Task).where(Task.todo_list == todo_list)
+
+    result = await session.execute(stmt)
+
+    return result.scalars().all()
+
+
+async def get_task(
+    session: AsyncSession,
+    task_id: int,
+    user: Optional[User] = None,
+    todo_list: Optional[TodoList] = None,
+) -> Optional[Task]:
+    stmt = select(Task).where(Task.id == task_id)
+
+    if todo_list is not None:
+        stmt = stmt.where(Task.todo_list == todo_list)
+
+    if user is not None:
+        stmt = stmt.join(
+            TodoList,
+            Task.todo_list_id == TodoList.id
+        ).where(
+            TodoList.user == user
+        )
+
+    result = await session.execute(stmt)
+
+    return result.scalar_one_or_none()
+
+
+async def update_task(
+    session: AsyncSession,
+    task: Task,
+    title: Optional[str] = None,
+    completed: Optional[bool] = None,
+):
+    stmt = update(Task).where(Task.id == task.id)
+
+    if title is not None:
+        task.title = title
+        stmt = stmt.values(title=title)
+
+    if completed is not None:
+        task.completed = completed
+        stmt = stmt.values(completed=completed)
+
+    await session.execute(stmt)
+    await session.commit()
+
+    return task
+
+
+async def delete_task(session: AsyncSession, task: Task):
+    stmt = delete(Task).where(Task.id == task.id)
+
+    await session.execute(stmt)
+    await session.commit()

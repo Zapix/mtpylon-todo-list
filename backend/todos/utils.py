@@ -3,12 +3,17 @@ from typing import List, Optional
 
 from db import async_session
 from users.models import User
-from .models import TodoList
+from .models import TodoList, Task
 from .dal import (
     create_todo_list as dal_create_todo_list,
     get_todo_lists as dal_get_todo_lists,
     get_single_todo_list as dal_get_single_todo_list,
     delete_todo_list as dal_delete_todo_list,
+    create_task as dal_create_task,
+    get_task_list as dal_get_task_list,
+    get_task as dal_get_task,
+    update_task as dal_update_task,
+    delete_task as dal_delete_task,
 )
 
 
@@ -59,3 +64,54 @@ async def get_todo_list_for_user(
 async def delete_todo_list(todo_list: TodoList):
     async with async_session() as session:
         await dal_delete_todo_list(session, todo_list)
+
+
+async def create_task(todo_list: TodoList, title: str) -> Task:
+    if len(title) == 0:
+        raise ValueError('Title should not been empty')
+
+    async with async_session() as session:
+        task = await dal_create_task(session, todo_list, title)
+    return task
+
+
+async def get_tasks_for_todo_list(todo_list: TodoList) -> List[Task]:
+    async with async_session() as session:
+        task_list = await dal_get_task_list(session, todo_list=todo_list)
+    return task_list
+
+
+async def get_task_for_user(user: User, task_id: int) -> Optional[Task]:
+    async with async_session() as session:
+        task = await dal_get_task(
+            session,
+            task_id=task_id,
+            user=user
+        )
+    return task
+
+
+async def change_title(task: Task, title: str) -> Task:
+    if len(title) == 0:
+        raise ValueError('Title should not been empty')
+
+    async with async_session() as session:
+        updated_task = await dal_update_task(session, task, title=title)
+    return updated_task
+
+
+async def mark_completed(task: Task) -> Task:
+    async with async_session() as session:
+        updated_task = await dal_update_task(session, task, completed=True)
+    return updated_task
+
+
+async def mark_uncompleted(task: Task) -> Task:
+    async with async_session() as session:
+        updated_task = await dal_update_task(session, task, completed=False)
+    return updated_task
+
+
+async def delete_task(task: Task):
+    async with async_session() as session:
+        await dal_delete_task(session, task)
