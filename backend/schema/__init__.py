@@ -20,6 +20,7 @@ from .functions import (
     remove_todo_list,
     create_task,
     edit_task_title,
+    set_as_completed,
 )
 
 mtpylon_schema = Schema(
@@ -41,6 +42,7 @@ mtpylon_schema = Schema(
         remove_todo_list,
         create_task,
         edit_task_title,
+        set_as_completed,
     ]
 )
 
