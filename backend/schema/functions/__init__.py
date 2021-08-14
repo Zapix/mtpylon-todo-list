@@ -12,6 +12,7 @@ from .get_task_list_func import get_task_list
 from .edit_task_title_func import edit_task_title
 from .set_as_completed_func import set_as_completed
 from .set_as_uncompleted_func import set_as_uncompleted
+from .remove_task_func import remove_task
 
 __all__ = [
     'register',
@@ -26,4 +27,5 @@ __all__ = [
     'edit_task_title',
     'set_as_completed',
     'set_as_uncompleted',
+    'remove_task',
 ]
