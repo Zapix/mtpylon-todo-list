@@ -9,7 +9,7 @@ const { Title } = Typography;
 function ErrorPage({ message = "Something goes wrong" }) {
   return (
     <div className="centered-page">
-      <div className="ErrorPage-container">
+      <div className="ErrorPage-container" data-testid="error-page">
         <FrownOutlined style={{fontSize: '4em'}} />
         <Title>{message}</Title>
       </div>

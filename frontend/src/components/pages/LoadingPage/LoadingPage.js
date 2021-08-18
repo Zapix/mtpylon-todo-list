@@ -4,7 +4,7 @@ import '../../templates/centered/index.css';
 
 function LoadingPage() {
   return (
-    <div className="centered-page">
+    <div className="centered-page" data-testid="loading-page">
       <Loading3QuartersOutlined spin={true} style={{fontSize: '4em'}} />
     </div>
   );
