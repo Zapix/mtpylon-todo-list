@@ -1,6 +1,16 @@
+import { Typography } from 'antd';
+import { Link } from 'react-router-dom';
+
+const { Title, Paragraph } = Typography;
+
 function MainPage() {
   return (
-    <p data-testid="main-page">Main App Page</p>
+    <div data-testid="main-page">
+      <Title>Main App Page</Title>
+      <Paragraph>
+        <Link to="/login">Login</Link>
+      </Paragraph>
+    </div>
   );
 }
 

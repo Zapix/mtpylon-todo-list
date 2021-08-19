@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './App';
 
@@ -15,7 +16,9 @@ afterEach(() => {
 test('renders loading page', () => {
   render(
     <RecoilRoot>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </RecoilRoot>
   );
 
@@ -26,7 +29,9 @@ test('renders loading page', () => {
 test('renders main page', (done) => {
   render(
     <RecoilRoot>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </RecoilRoot>
   );
 
@@ -45,7 +50,9 @@ test('renders main page', (done) => {
 test('renders error page', (done) => {
   render(
     <RecoilRoot>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </RecoilRoot>
   );
 
