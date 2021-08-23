@@ -21,10 +21,10 @@ function LoginForm({ onSubmit: handleSubmit = console.log }) {
   });
 
   return (
-    <form
+    <Form
       name="login-form"
       data-testid="login-form"
-      onSubmit={formik.handleSubmit}
+      onFinish={formik.handleSubmit}
     >
       <Form.Item>
         {formik.errors.nonFieldError ? (
@@ -66,12 +66,12 @@ function LoginForm({ onSubmit: handleSubmit = console.log }) {
           data-testid="submit-button"
           type="primary"
           htmlType="submit"
-          // disabled={formik.isSubmitting || !formik.isValid}
+          disabled={formik.isSubmitting || !formik.isValid}
         >
           Login
         </Button>
       </Form.Item>
-    </form>
+    </Form>
   );
 }
 
