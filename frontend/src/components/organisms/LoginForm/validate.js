@@ -1,14 +1,14 @@
 /**
- * @param {{login: string, password: string}} values
- * @return {{login: string, password: string}} - errors for login form
+ * @param {{nickname: string, password: string}} values
+ * @return {{nickname: string, password: string}} - errors for nickname form
  */
 function validate(values) {
   const errors = {};
 
-  if (!values.login) {
-    errors.login = 'This field required';
-  } else if (values.login.length < 5){
-    errors.login = 'Login should be more then 5 chars'
+  if (!values.nickname) {
+    errors.nickname = 'This field required';
+  } else if (values.nickname.length < 5){
+    errors.nickname = 'Login should be more then 5 chars'
   }
 
   if (!values.password) {

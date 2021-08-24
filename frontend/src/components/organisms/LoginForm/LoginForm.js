@@ -8,7 +8,7 @@ function LoginForm({ onSubmit: handleSubmit = console.log }) {
   const formik = useFormik({
     validate,
     initialValues: {
-      login: '',
+      nickname: '',
       password: '',
     },
     onSubmit: (values, { setErrors }) => {
@@ -37,15 +37,15 @@ function LoginForm({ onSubmit: handleSubmit = console.log }) {
       </Form.Item>
       <Form.Item
         name="login"
-        validateStatus={formik.touched.login && formik.errors.login ? "error" : "success"}
-        help={formik.touched.login && formik.errors.login ? formik.errors.login : null}
+        validateStatus={formik.touched.nickname && formik.errors.nickname? "error" : "success"}
+        help={formik.touched.nickname && formik.errors.nickname? formik.errors.nickname: null}
       >
         <Input
           data-testid="login-field"
           size="large"
           placeholder="Login"
           prefix={<UserOutlined/>}
-          {...formik.getFieldProps('login')}
+          {...formik.getFieldProps('nickname')}
         />
       </Form.Item>
       <Form.Item

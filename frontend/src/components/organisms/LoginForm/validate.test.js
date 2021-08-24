@@ -2,27 +2,27 @@ import validate from './validate';
 
 test('validate required fields', () => {
   expect(validate({
-    login: undefined,
+    nickname: undefined,
     password: undefined
   })).toEqual({
-    login: 'This field required',
+    nickname: 'This field required',
     password: 'This field required',
   });
 });
 
 test('validate length fields', () => {
   expect(validate({
-    login: 'a',
+    nickname: 'a',
     password: 'b'
   })).toEqual({
-    login: 'Login should be more then 5 chars',
+    nickname: 'Login should be more then 5 chars',
     password: 'Password should be more then 5 chars'
   });
 });
 
 test('success', () => {
   expect(validate({
-    login: 'zapix',
+    nickname: 'zapix',
     password: '123123'
   })).toEqual({});
 });
