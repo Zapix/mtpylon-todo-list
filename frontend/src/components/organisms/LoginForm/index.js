@@ -1,2 +1,4 @@
 import LoginForm from './LoginForm';
-export default LoginForm;
+import LoginFormContainer from './LoginFormContainer';
+
+export { LoginForm, LoginFormContainer };
