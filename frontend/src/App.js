@@ -2,9 +2,10 @@ import {
   Switch,
   Route,
 } from 'react-router';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 
 import { connectionStatusAtom } from './state/connectionStatus/atoms';
+import { meAtom } from './state/authentication/atoms';
 import { useMTprotoConnection } from './state/connectionStatus/hooks';
 import LoadingPage from './components/pages/LoadingPage';
 import ErrorPage  from './components/pages/ErrorPage';
@@ -16,12 +17,17 @@ function App(){
   const connectionStatus = useRecoilValue(connectionStatusAtom);
   useMTprotoConnection(window.connection);
 
+  const me = useRecoilValueLoadable(meAtom);
+
   let component = null;
-  if (connectionStatus === 'INIT') {
+  if (
+    connectionStatus === 'INIT' ||
+    (me.state === 'loading' && connectionStatus === 'AUTH_KEY_CREATED')
+  ) {
     component = (
       <LoadingPage />
     );
-  } else if (connectionStatus === 'AUTH_KEY_CREATED') {
+  } else if (connectionStatus === 'AUTH_KEY_CREATED' && me.state === 'hasValue') {
     component = (
      <Switch>
        <Route path="/login">
