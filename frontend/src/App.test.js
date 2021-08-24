@@ -2,6 +2,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import { meAtom } from 'state/authentication/atoms';
+
 import App from './App';
 
 beforeEach(() => {
@@ -155,8 +157,48 @@ test('renders loading until user info did not received', () => {
 });
 
 test('renders main page', () => {
+  const user = {
+    '@@type': 'User',
+    '@@constructor': 'registered_user',
+    nickname: 'johndoe',
+    id: 12
+  }
+
   render(
-    <RecoilRoot>
+    <RecoilRoot initializeState={({ set }) => set(meAtom, user)}>
+      <Router>
+        <App/>
+      </Router>
+    </RecoilRoot>
+  );
+
+  window.connection.status = 'AUTH_KEY_CREATED';
+  window.connection.request = jest.fn();
+  window.connection.request.mockResolvedValue({
+    '@@constructor': 'registered_user',
+    '@@type': 'User',
+    nickname: 'johndoe',
+    id: 12
+  });
+
+  const event = new Event('statusChanged');
+  event.status = 'AUTH_KEY_CREATED';
+  window.connection.dispatchEvent(event);
+
+  return waitFor(() => screen.getByTestId('main-page')).then(() => {
+    const mainPage = screen.getByTestId('main-page');
+    expect(mainPage).toBeInTheDocument();
+  });
+});
+
+test('renders login page', () => {
+  const anonymousUser = {
+    '@@type': 'User',
+    '@@constructor': 'anonymous_user',
+  }
+
+  render(
+    <RecoilRoot initializeState={({ set }) => set(meAtom, anonymousUser)}>
       <Router>
         <App/>
       </Router>
@@ -174,9 +216,8 @@ test('renders main page', () => {
   event.status = 'AUTH_KEY_CREATED';
   window.connection.dispatchEvent(event);
 
-
-  return waitFor(() => screen.getByTestId('main-page')).then(() => {
-    const mainPage = screen.getByTestId('main-page');
+  return waitFor(() => screen.getByTestId('login-page')).then(() => {
+    const mainPage = screen.getByTestId('login-page');
     expect(mainPage).toBeInTheDocument();
   });
 });

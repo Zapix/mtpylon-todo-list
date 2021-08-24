@@ -1,16 +1,15 @@
-import {
-  Switch,
-  Route,
-} from 'react-router';
+import { Switch } from 'react-router';
 import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 
-import { connectionStatusAtom } from './state/connectionStatus/atoms';
-import { meAtom } from './state/authentication/atoms';
-import { useMTprotoConnection } from './state/connectionStatus/hooks';
-import LoadingPage from './components/pages/LoadingPage';
-import ErrorPage  from './components/pages/ErrorPage';
-import MainPage from './components/pages/MainPage';
-import LoginPage from './components/pages/LoginPage';
+import AnonymousRoute from 'components/molecules/AnonymousRoute';
+import AuthenticatedRoute from 'components/molecules/AuthenticatedRoute';
+import { connectionStatusAtom } from 'state/connectionStatus/atoms';
+import { meAtom } from 'state/authentication/atoms';
+import { useMTprotoConnection } from 'state/connectionStatus/hooks';
+import LoadingPage from 'components/pages/LoadingPage';
+import ErrorPage  from 'components/pages/ErrorPage';
+import MainPage from 'components/pages/MainPage';
+import LoginPage from 'components/pages/LoginPage';
 import './App.css';
 
 function App(){
@@ -30,12 +29,12 @@ function App(){
   } else if (connectionStatus === 'AUTH_KEY_CREATED' && me.state === 'hasValue') {
     component = (
      <Switch>
-       <Route path="/login">
+       <AnonymousRoute path="/login">
          <LoginPage />
-       </Route>
-       <Route path="/">
+       </AnonymousRoute>
+       <AuthenticatedRoute path="/">
          <MainPage />
-       </Route>
+       </AuthenticatedRoute>
      </Switch>
     );
   } else {
