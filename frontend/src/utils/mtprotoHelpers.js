@@ -12,9 +12,5 @@ export const getMTProtoConnectionStatus = R.partial(
 
 export const isMTProtoAuthKeyCreated = R.pipe(
   getMTProtoConnectionStatus,
-  x => {
-    console.log(x);
-    return x;
-  },
   R.equals('AUTH_KEY_CREATED'),
 );
