@@ -10,9 +10,8 @@ export function useMTprotoConnection(connection) {
 
   useEffect(() => {
     connection.addEventListener('statusChanged', (e) => {
-      console.log(`MTProto status: ${e.status}`);
       updateStatus(e.status);
     })
-    connection.init();
+    window.connection.init();
   }, []);
 }
