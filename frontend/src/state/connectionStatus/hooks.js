@@ -13,6 +13,6 @@ export function useMTprotoConnection(connection) {
       console.log(`MTProto status: ${e.status}`);
       updateStatus(e.status);
     })
-    connection.init();
+    window.connection.init();
   }, []);
 }
