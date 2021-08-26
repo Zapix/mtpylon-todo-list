@@ -1,2 +1,4 @@
 import RegistrationForm from './RegistrationForm';
-export { RegistrationForm };
+import RegistrationFormContainer from './RegistrationFromContainer';
+
+export { RegistrationForm, RegistrationFormContainer };

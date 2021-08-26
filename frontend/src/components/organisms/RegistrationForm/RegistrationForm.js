@@ -90,7 +90,7 @@ function RegistrationForm({ onSubmit: handleSubmit = () => {} }) {
           htmlType="submit"
           disabled={formik.isSubmitting || !formik.isValid}
         >
-          Login
+          Register
         </Button>
       </Form.Item>
     </Form>
