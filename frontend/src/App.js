@@ -10,6 +10,7 @@ import LoadingPage from 'components/pages/LoadingPage';
 import ErrorPage  from 'components/pages/ErrorPage';
 import MainPage from 'components/pages/MainPage';
 import LoginPage from 'components/pages/LoginPage';
+import RegistrationPage from 'components/pages/RegistrationPage';
 import './App.css';
 
 function App(){
@@ -31,6 +32,9 @@ function App(){
      <Switch>
        <AnonymousRoute path="/login">
          <LoginPage />
+       </AnonymousRoute>
+       <AnonymousRoute path="/register">
+         <RegistrationPage />
        </AnonymousRoute>
        <AuthenticatedRoute path="/">
          <MainPage />

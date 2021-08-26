@@ -16,7 +16,7 @@ function LoginPage() {
         </Col>
       </Row>
       <Paragraph>
-        <Link to="/">Back to main</Link>
+        <Link to="/register">Register</Link>
       </Paragraph>
     </div>
   );
