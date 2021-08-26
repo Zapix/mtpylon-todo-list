@@ -17,3 +17,18 @@ export function useLogin() {
       });
   }
 }
+
+export function useRegister() {
+  const setMe = useSetRecoilState(meAtom);
+
+  return (data) => {
+    const rpc = methodFromSchema(window.schema, 'register', data);
+    return window.connection.request(rpc)
+      .then((result) => {
+        setMe(result)
+      })
+      .catch(error => {
+        return Promise.reject({ 'nonFieldError': error.errorMessage });
+      });
+  }
+}
