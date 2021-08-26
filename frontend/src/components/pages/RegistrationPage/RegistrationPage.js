@@ -1,6 +1,7 @@
 import { Typography, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 
+import { RegistrationFormContainer } from '../../organisms/RegistrationForm';
 import 'components/templates/centered/index.css';
 
 const { Title, Paragraph } = Typography;
@@ -11,7 +12,7 @@ function RegistrationPage() {
       <Title>Welcome, please register!</Title>
       <Row>
         <Col span={12} offset={6}>
-          Here will be registration form
+          <RegistrationFormContainer />
         </Col>
       </Row>
       <Paragraph>
