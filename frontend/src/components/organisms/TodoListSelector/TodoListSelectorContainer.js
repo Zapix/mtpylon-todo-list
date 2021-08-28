@@ -1,29 +1,18 @@
 import React from 'react';
+import { useRecoilValueLoadable } from 'recoil';
 
+import { todoListsAtomFamily } from 'state/todolists/atoms';
 import TodoListSelector from './TodoListSelector';
 
 function TodoListSelectorContainer() {
-  const todoLists = [
-    {
-      id: 1,
-      title: 'MTPylon Backend',
-    },
-    {
-      id: 2,
-      title: 'MTPylon Frontend'
-    },
-    {
-      id: 3,
-      title: 'Investment plans'
-    },
-    {
-      id: 4,
-      title: 'Homework'
-    },
-  ];
+  const todoLists = useRecoilValueLoadable(todoListsAtomFamily());
+
+  if (todoLists.state !== 'hasValue') {
+    return null;
+  }
 
   return (
-    <TodoListSelector todoLists={todoLists} />
+    <TodoListSelector todoLists={todoLists.contents} />
   );
 }
 
