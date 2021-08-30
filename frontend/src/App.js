@@ -6,6 +6,7 @@ import AuthenticatedRoute from 'components/molecules/AuthenticatedRoute';
 import { connectionStatusAtom } from 'state/connectionStatus/atoms';
 import { meAtom } from 'state/authentication/atoms';
 import { useMTprotoConnection } from 'state/connectionStatus/hooks';
+import AddTodoListPage from './components/pages/AddTodoListPage';
 import LoadingPage from 'components/pages/LoadingPage';
 import ErrorPage  from 'components/pages/ErrorPage';
 import MainPage from 'components/pages/MainPage';
@@ -36,6 +37,9 @@ function App(){
        <AnonymousRoute path="/register">
          <RegistrationPage />
        </AnonymousRoute>
+       <AuthenticatedRoute path="/add-todo-list">
+         <AddTodoListPage />
+       </AuthenticatedRoute>
        <AuthenticatedRoute path="/">
          <MainPage />
        </AuthenticatedRoute>
