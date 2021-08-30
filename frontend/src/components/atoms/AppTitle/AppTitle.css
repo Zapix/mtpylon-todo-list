@@ -1,3 +1,8 @@
 .AppTitle-title {
   color: #fff;
 }
+
+.AppTitle-title a, .AppTitle-title a:hover {
+  color: #ffffff;
+  text-decoration: none!important;
+}
