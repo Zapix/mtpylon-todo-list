@@ -25,9 +25,6 @@ function AddTodoListForm({ onSubmit: handleSubmit = () => {} }) {
       data-testid="add-todo-list_form"
       onFinish={formik.handleSubmit}
     >
-      data-testid="login-form"
-      onFinish={formik.handleSubmit}
-      >
       <Form.Item>
         {formik.errors.nonFieldError ? (
           <Alert

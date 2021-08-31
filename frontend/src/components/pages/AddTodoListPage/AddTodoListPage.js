@@ -1,7 +1,8 @@
 import React from 'react';
+import { PageHeader, Row, Col } from 'antd';
 
 import MainLayout from 'components/templates/MainLayout';
-import { PageHeader } from 'antd';
+import { AddToDoListFormContainer } from 'components/organisms/AddTodoListForm';
 
 
 function AddTodoListPage() {
@@ -10,6 +11,11 @@ function AddTodoListPage() {
       <PageHeader
         title="Add ToDo list"
       />
+      <Row>
+        <Col span={12} offset={6}>
+          <AddToDoListFormContainer />
+        </Col>
+      </Row>
     </MainLayout>
   );
 }
