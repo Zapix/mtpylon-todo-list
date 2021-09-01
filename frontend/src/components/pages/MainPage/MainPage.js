@@ -1,22 +1,18 @@
+import React from 'react';
 import { Typography } from 'antd';
-import { Link } from 'react-router-dom';
-import { useRecoilValueLoadable } from 'recoil';
 
-import { meAtom } from '../../../state/authentication/atoms';
+import MainLayout from 'components/templates/MainLayout';
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
+
 
 function MainPage() {
-  const me = useRecoilValueLoadable(meAtom);
-
   return (
-    <div data-testid="main-page">
-      <Title>Main App Page</Title>
-      <Paragraph>
-        <Title level={3}>Welcome, {me.contents.nickname}!</Title>
-        <Link to="/login">Login</Link>
-      </Paragraph>
-    </div>
+    <MainLayout>
+      <Title>
+        Here will be content
+      </Title>
+    </MainLayout>
   );
 }
 
