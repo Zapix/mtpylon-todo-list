@@ -1,8 +1,13 @@
 import * as R from 'ramda';
-import { atomFamily, selectorFamily, } from 'recoil';
+import { atom, atomFamily, selectorFamily, } from 'recoil';
 import { methodFromSchema } from 'zagram';
 
 import { meAtom } from 'state/authentication/atoms';
+
+export const selectedTodoListIdAtom = atom({
+  key: 'selectedTodoList',
+  default: null,
+})
 
 export const todoListsAtomFamily = atomFamily({
   key: 'todoLists',

@@ -13,7 +13,9 @@ function TodoListSelector({ todoLists = []}) {
       </Menu.Item>
       {todoLists.map((item) => (
         <Menu.Item key={item.id} icon={<FileDoneOutlined />}>
-          {item.title}
+          <Link to={`/todo-list/${item.id}`}>
+            {item.title}
+          </Link>
         </Menu.Item>
       ))}
     </Menu>
