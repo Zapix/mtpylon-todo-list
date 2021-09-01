@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { Row, Col, PageHeader } from 'antd';
 
 import { selectedTodoListIdAtom } from 'state/todolists/atoms';
 import MainLayout from 'components/templates/MainLayout';
+import { TodoListHeaderContainer } from 'components/organisms/TodoListHeader';
 
 function TodoListPage() {
   const { todoListId }  = useParams();
@@ -16,9 +16,7 @@ function TodoListPage() {
 
   return (
     <MainLayout>
-      <PageHeader
-        title={`Todo List Page ${todoListId}`}
-      />
+      <TodoListHeaderContainer />
     </MainLayout>
   );
 }
