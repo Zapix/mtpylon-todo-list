@@ -10,7 +10,10 @@ function CreateTaskForm({ onSubmit: handleSubmit = () => {} }) {
     validate,
     initialValues: {
       title: '',
-    }
+    },
+    onSubmit: (values, { setErrors }) => handleSubmit(values)
+      .then(() => formik.resetForm())
+      .catch((reason) => setErrors(reason))
   });
 
   return (
@@ -25,6 +28,7 @@ function CreateTaskForm({ onSubmit: handleSubmit = () => {} }) {
         help={formik.touched.title && formik.errors.title ? formik.errors.title : null}
       >
         <Input
+          data-testid="title-field"
           type="text"
           placeholder="Task..."
           {...formik.getFieldProps('title')}
@@ -32,6 +36,7 @@ function CreateTaskForm({ onSubmit: handleSubmit = () => {} }) {
       </Form.Item>
       <Form.Item>
         <Button
+          data-testid="submit-button"
           htmlType="submit"
           type="primary"
           icon={<PlusOutlined />}
