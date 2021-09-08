@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { Form, Input, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
+import './CreateTaskForm.css';
 import validate from './validate';
 
 function CreateTaskForm({ onSubmit: handleSubmit = () => {} }) {
@@ -19,11 +20,13 @@ function CreateTaskForm({ onSubmit: handleSubmit = () => {} }) {
   return (
     <Form
       name="create-task-form"
+      className="CreateTaskForm-form"
       data-testid="create-task-form"
       layout="inline"
       onFinish={formik.handleSubmit}
     >
       <Form.Item
+        className="CreateTaskForm-title-item"
         validateStatus={formik.touched.title && formik.errors.title ? 'error' : 'success'}
         help={formik.touched.title && formik.errors.title ? formik.errors.title : null}
       >

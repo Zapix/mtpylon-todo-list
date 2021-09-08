@@ -1,0 +1,11 @@
+.TaskList-container {
+
+}
+
+.TaskList-container .TaskList-item {
+  border-bottom: 1px solid #cccccc;
+}
+
+.TaskList-container .TaskList-item:last-child {
+  border-bottom: none;
+}
