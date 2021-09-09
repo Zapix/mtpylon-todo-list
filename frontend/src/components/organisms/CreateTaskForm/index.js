@@ -1,3 +1,4 @@
 import CreateTaskForm from './CreateTaskForm';
+import CreateTaskFormContainer from './CreateTaskFormContainer';
 
-export { CreateTaskForm };
+export { CreateTaskForm, CreateTaskFormContainer };
