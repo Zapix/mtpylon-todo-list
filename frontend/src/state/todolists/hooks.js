@@ -45,3 +45,52 @@ export function useCreateTask(todoListId) {
       })
   };
 }
+
+export function useSetAsCompleted(todoListId) {
+  const [taskList, setTaskList] = useRecoilStateLoadable(taskListFamily(todoListId));
+
+  return (task) => {
+    const rpc = methodFromSchema(
+      window.schema,
+      'set_as_completed',
+      { task_id: task.id },
+    );
+    const completedTask = { ...task, completed: true };
+
+    setTaskList(taskList.contents.map(
+      (item) => item.id === completedTask.id ? completedTask : item
+    ));
+
+    return window.connection.request(rpc)
+      .catch(error => {
+        console.warn(error);
+        setTaskList(taskList.contents.map(
+          (item) => item.id === task.id ? task : item
+        ));
+      });
+  };
+}
+
+export function useSetAsIncompleted(todoListId) {
+  const [taskList, setTaskList] = useRecoilStateLoadable(taskListFamily(todoListId));
+
+  return (task) => {
+    const rpc = methodFromSchema(
+      window.schema,
+      'set_as_uncompleted',
+      { task_id: task.id },
+    );
+    const uncompletedTask = { ...task, completed: false };
+
+    setTaskList(taskList.contents.map(
+      (item) => item.id === uncompletedTask.id ? uncompletedTask : item
+    ));
+
+    return window.connection.request(rpc).catch(error => {
+      console.warn(error);
+      setTaskList(taskList.contents.map(
+        (item) => item.id === task.id ? task : item
+      ));
+    });
+  };
+}
