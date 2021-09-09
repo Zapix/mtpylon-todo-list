@@ -9,10 +9,7 @@ test('mark as complete', () => {
     '@@constuctor': 'task',
     id: 2,
     title: 'Make mtpylon frontend',
-    status: {
-      '@@type': 'Bool',
-      '@@constructor': 'boolFalse',
-    },
+    completed: false,
   };
 
   const markAsComplete = jest.fn();
@@ -39,10 +36,7 @@ test('mark as incomplete', () => {
     '@@constructor': 'task',
     id: 1,
     title: 'Make mtpylon backend',
-    status: {
-      '@@type': 'Bool',
-      '@@constructor': 'boolTrue',
-    },
+    completed: true,
   };
 
   const markAsComplete = jest.fn();

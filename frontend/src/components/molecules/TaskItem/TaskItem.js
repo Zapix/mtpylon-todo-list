@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Tooltip } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { isObjectOf } from 'zagram';
+import isTaskDone from 'utils/isTaskDone';
 
 import './TaskItem.css';
 
@@ -13,11 +13,11 @@ function TaskItem({
   return (
     <div className="TaskItem-container">
       <div className="TaskItem-title">
-        task item {task.title}
+        {task.title}
       </div>
       <div className="TaskItem-actions">
         {
-          isObjectOf('boolTrue', task.status) ? (
+          isTaskDone(task) ? (
             <Tooltip title="Mark as incomplete">
               <Button
                 onClick={(e) =>  {
