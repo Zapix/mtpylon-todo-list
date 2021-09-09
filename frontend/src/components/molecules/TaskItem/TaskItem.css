@@ -1,0 +1,27 @@
+.TaskItem-container {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  background: #ffffff;
+  padding: 16px;
+}
+
+.TaskItem-title {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.TaskItem-container.completed .TaskItem-title{
+  text-decoration: line-through;
+}
+
+.TaskItem-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 0;
+}

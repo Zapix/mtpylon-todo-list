@@ -21,3 +21,20 @@ export const todoListsAtomFamily = atomFamily({
     },
   }),
 });
+
+export const taskListFamily = atomFamily({
+  key: 'taskList',
+  default: selectorFamily({
+    key: 'taskList/default',
+    get: (todoListId) => ({ get }) => {
+      console.log(`Select for todo list: ${todoListId}`);
+
+      const rpc = methodFromSchema(window.schema, 'get_task_list', { todo_list_id: todoListId });
+      console.log(rpc);
+
+      return window.connection.request(rpc).then(data => {
+        return data.tasks;
+      });
+    },
+  }),
+});

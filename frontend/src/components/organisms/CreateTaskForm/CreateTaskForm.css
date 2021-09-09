@@ -1,0 +1,15 @@
+.CreateTaskForm-form {
+  display: flex;
+  flex-direction: row;
+  background: #ffffff;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px!important;
+  padding-left: 8px!important;
+  padding-right: 8px!important;
+  height: 120px!important;
+}
+
+.CreateTaskForm-title-item {
+  flex-grow: 1!important;
+}
