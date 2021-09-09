@@ -1,31 +1,19 @@
 import React from 'react';
+import { useRecoilValueLoadable } from 'recoil';
+
+import { taskListFamily } from 'state/todolists/atoms';
 
 import TaskList from './TaskList';
 
-function TaskListContainer() {
-  const taskList = [
-    {
-      '@@type': 'Task',
-      '@@constructor': 'task',
-      id: 1,
-      title: 'Make mtpylon backend',
-      status: {
-        '@@type': 'Bool',
-        '@@constructor': 'boolTrue',
-      },
-    },
-    {
-      '@@type': 'Task',
-      '@@constuctor': 'task',
-      id: 2,
-      title: 'Make mtpylon frontend',
-      status: {
-        '@@type': 'Bool',
-        '@@constructor': 'boolFalse',
-      },
-    }
-  ]
-  return <TaskList taskList={taskList} />
+function TaskListContainer({ todoListId }) {
+  const taskList = useRecoilValueLoadable(taskListFamily(todoListId));
+  console.log(taskList);
+
+  if (taskList.state === 'hasValue') {
+    return <TaskList taskList={taskList.contents} />
+  }
+
+  return <TaskList taskList={[]} />
 }
 
 export default TaskListContainer;
