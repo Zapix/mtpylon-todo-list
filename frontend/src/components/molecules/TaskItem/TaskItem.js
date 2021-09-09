@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Button, Tooltip } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import isTaskDone from 'utils/isTaskDone';
@@ -7,11 +8,14 @@ import './TaskItem.css';
 
 function TaskItem({
   task,
-  onMakrComplete: handleMarkComplete = () => {},
-  onMarkIncomplete: handleMarkInComplete = () => {}
+  onMarkComplete: handleMarkComplete = () => {},
+  onMarkIncomplete: handleMarkIncomplete = () => {}
 }) {
   return (
-    <div className="TaskItem-container">
+    <div className={classNames({
+      'TaskItem-container': true,
+      completed: isTaskDone(task),
+    })}>
       <div className="TaskItem-title">
         {task.title}
       </div>
@@ -22,7 +26,7 @@ function TaskItem({
               <Button
                 onClick={(e) =>  {
                   e.preventDefault();
-                  handleMarkInComplete(task);
+                  handleMarkIncomplete(task);
                 }}
                 data-testid="mark-as-incomplete-button"
                 type="primary"

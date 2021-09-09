@@ -18,7 +18,7 @@ test('mark as complete', () => {
   render(
     <TaskItem
       task={task}
-      onMakrComplete={markAsComplete}
+      onMarkComplete={markAsComplete}
       onMarkIncomplete={markAsInComplete}
     />
   );
@@ -45,7 +45,7 @@ test('mark as incomplete', () => {
   render(
     <TaskItem
       task={task}
-      onMakrComplete={markAsComplete}
+      onMarkComplete={markAsComplete}
       onMarkIncomplete={markAsInComplete}
     />
   );
