@@ -6,10 +6,7 @@ test('task done', () => {
     '@@constuctor': 'task',
     id: 2,
     title: 'Make mtpylon frontend',
-    status: {
-      '@@constructor': 'boolTrue',
-      '@@type': 'Bool'
-    },
+    completed: true,
   })).toBeTruthy();
 });
 
@@ -19,9 +16,6 @@ test('task not done', () => {
     '@@constuctor': 'task',
     id: 2,
     title: 'Make mtpylon frontend',
-    status: {
-      '@@constructor': 'boolFalse',
-      '@@type': 'Bool'
-    },
+    completed: false,
   })).toBeFalsy();
 });
