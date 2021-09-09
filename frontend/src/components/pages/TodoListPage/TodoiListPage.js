@@ -6,7 +6,7 @@ import { Row, Col } from 'antd';
 import { selectedTodoListIdAtom } from 'state/todolists/atoms';
 import MainLayout from 'components/templates/MainLayout';
 import { TodoListHeaderContainer } from 'components/organisms/TodoListHeader';
-import { CreateTaskForm } from 'components/organisms/CreateTaskForm';
+import { CreateTaskFormContainer } from 'components/organisms/CreateTaskForm';
 import { TaskListContainer } from 'components/organisms/TaskList';
 
 function TodoListPage() {
@@ -22,14 +22,14 @@ function TodoListPage() {
       <TodoListHeaderContainer />
       <Row>
         <Col offset={6} span={12}>
-          <CreateTaskForm
-            onSubmit={() => Promise.resolve({id: 1, title: 'Side effect error'})}
+          <CreateTaskFormContainer
+            todoListId={todoListId}
           />
         </Col>
       </Row>
       <Row>
         <Col offset={6} span={12}>
-          <TaskListContainer />
+          <TaskListContainer todoListId={todoListId} />
         </Col>
       </Row>
     </MainLayout>
