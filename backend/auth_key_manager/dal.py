@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.sql import Select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
@@ -40,3 +40,12 @@ async def get_key(
 
     result = await session.execute(stmt)
     return result.scalar_one_or_none()
+
+
+async def delete_key(
+    session: AsyncSession,
+    auth_key: MtpylonAuthKey
+):
+    stmt = delete(AuthKeyItem).where(AuthKeyItem.auth_key_id == auth_key.id)
+    await session.execute(stmt)
+    await session.commit()
