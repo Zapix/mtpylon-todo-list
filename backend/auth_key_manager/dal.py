@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+from typing import Optional
+
+from sqlalchemy import select
+from sqlalchemy.sql import Select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from mtpylon.crypto import AuthKey as MtpylonAuthKey
@@ -22,3 +26,17 @@ async def create_key(
         raise ValueError(str(e))
 
     return auth_key_item
+
+
+async def get_key(
+    session: AsyncSession,
+    auth_key_id: int
+) -> Optional[AuthKeyItem]:
+    """
+    Checks has we got auth key or not
+    """
+    stmt: Select = select(AuthKeyItem)
+    stmt = stmt.where(AuthKeyItem.auth_key_id == auth_key_id)
+
+    result = await session.execute(stmt)
+    return result.scalar_one_or_none()
