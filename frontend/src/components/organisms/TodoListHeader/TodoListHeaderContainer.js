@@ -1,20 +1,20 @@
 import React from 'react';
 import * as R from 'ramda';
-import { useRecoilValue} from 'recoil';
+import { useRecoilValueLoadable } from 'recoil';
 
 import { selectedTodoListSelector } from 'state/todolists/selectors';
 import TodoListHeader from './TodoListHeader';
 
 
 function TodoListHeaderContainer(){
-  const todoList = useRecoilValue(selectedTodoListSelector);
+  const todoList = useRecoilValueLoadable(selectedTodoListSelector);
 
-  if (R.isNil(todoList)) {
+  if (todoList.state !== 'hasValue' || R.isNil(todoList.contents)) {
     return null;
   }
 
   return (
-    <TodoListHeader todoList={todoList} />
+    <TodoListHeader todoList={todoList.contents} />
   );
 }
 
