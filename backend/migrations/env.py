@@ -12,6 +12,7 @@ from alembic import context
 from db import Base
 from users.models import Base as UsersBase
 from todos.models import Base as TodosBase
+from auth_key_manager.models import Base as AuthKeyBase
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

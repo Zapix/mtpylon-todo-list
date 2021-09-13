@@ -18,7 +18,7 @@
     "react-scripts": "4.0.3",
     "recoil": "^0.3.1",
     "web-vitals": "^1.1.2",
-    "zagram": "0.0.1"
+    "zagram": "0.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
