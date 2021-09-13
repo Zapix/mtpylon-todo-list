@@ -42,6 +42,10 @@ if __name__ == '__main__':
                     'rsa_keys': get_rsa_keys()
                 }
             },
+            'auth_key_manager': {
+                'manager': 'auth_key_manager.manager.AuthKeyDbManager',
+                'params': {},
+            },
             'pub_keys_path': '/pub-keys',
             'schema_path': '/schema',
         }
