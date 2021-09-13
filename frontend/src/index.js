@@ -9,16 +9,50 @@ import reportWebVitals from './reportWebVitals';
 
 import { MTProto } from 'zagram';
 
+
+function loadAuthData() {
+  const authDataStr = window.localStorage.getItem('authData');
+
+  if (authDataStr) {
+    return JSON.parse(authDataStr);
+  }
+
+  return authDataStr;
+}
+
+function saveAuthData(authKey, authKeyId, serverSalt) {
+  window.localStorage.setItem('authData', JSON.stringify({
+    authKey,
+    authKeyId,
+    serverSalt
+  }));
+}
+
 Promise.all([
   fetch('http://localhost:8081/schema').then(response => response.json()),
   fetch('http://localhost:8081/pub-keys').then(response => response.json()),
 ]).then(([schema, pems]) => {
+  const authData = loadAuthData();
+
+  console.log('Auth key data:', authData);
+
   window.schema = schema;
   window.connection = new MTProto(
     'ws://localhost:8081/ws',
     schema,
     pems,
+    authData
   );
+
+  window.connection.addEventListener('statusChanged', (e) => {
+    if (e.status === 'AUTH_KEY_CREATED') {
+      saveAuthData(
+        window.connection.authKey,
+        Array.from(window.connection.authKeyId),
+        Array.from(window.connection.serverSalt),
+      );
+    }
+  })
 
   ReactDOM.render(
     <React.StrictMode>
