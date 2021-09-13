@@ -36,7 +36,7 @@ async def get_key(
     Checks has we got auth key or not
     """
     stmt: Select = select(AuthKeyItem)
-    stmt = stmt.where(AuthKeyItem.auth_key_id == auth_key_id)
+    stmt = stmt.where(AuthKeyItem.auth_key_id == int64_to_long(auth_key_id))
 
     result = await session.execute(stmt)
     return result.scalar_one_or_none()
@@ -46,6 +46,8 @@ async def delete_key(
     session: AsyncSession,
     auth_key: MtpylonAuthKey
 ):
-    stmt = delete(AuthKeyItem).where(AuthKeyItem.auth_key_id == auth_key.id)
+    stmt = delete(AuthKeyItem).where(
+        AuthKeyItem.auth_key_id == int64_to_long(auth_key.id)
+    )
     await session.execute(stmt)
     await session.commit()
